@@ -25,8 +25,8 @@ interface Regiao{
 }
 
 interface Agente{
-    codigo: number,
-    data: string,
+    codigo: { _text: string },
+    data: { _text: string },
     regiao: Regiao[],
 
 }

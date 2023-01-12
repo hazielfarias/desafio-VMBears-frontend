@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { xml2js } from 'xml-js';
+import { dataToDTO } from './model/data-dto.model';
 import { DataModel } from './model/data.model';
+import { ApiService } from './service/api.service';
 
 
 @Component({
@@ -14,20 +16,28 @@ export class AppComponent {
 
   loading = false;
 
-  onFileSelected(event: any): void {
-    
-    this.selectedFile = event.target.files[0] ?? null;
+  constructor(private apiService: ApiService){}
 
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] ?? null;
   }
 
-  setFileContent(texto: string | undefined) {
+  setFileContentAndSend(texto: string | undefined) {
     const json: any = xml2js(texto!, {compact: true});
     if (!json.agentes.agente.length){
       json.agentes.agente = [json.agentes.agente];
     }
     this.fileContent = json as DataModel;    
-    console.log(this.fileContent.agentes.agente[0].regiao[0]);
+    const payload = dataToDTO(this.fileContent);
     
+    this.loading = true;
+    this.apiService.sendDataDTOToApi(payload).subscribe({
+      next: (res) => this.loading = false,
+      error:  (err) => {
+        console.log(err);
+        this.loading = false;
+      },
+    });
   }
 
   load() {
@@ -35,7 +45,7 @@ export class AppComponent {
     this.fileContent = undefined;
     fileReader.onload = (e) => {
       const text = fileReader.result?.toString().trim();
-      this.setFileContent(text);
+      this.setFileContentAndSend(text);
     }
     fileReader.readAsText(this.selectedFile);
   }
