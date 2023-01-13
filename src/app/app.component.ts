@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { xml2js } from 'xml-js';
 import { dataToDTO } from './model/data-dto.model';
 import { DataModel } from './model/data.model';
@@ -21,10 +22,14 @@ export class AppComponent implements OnInit{
   filterList = ['SE', 'S', 'N', 'NE'];
   selectedFilter: string | null = null;
 
-  constructor(private apiService: ApiService){}
+  constructor(private apiService: ApiService, private _snackBar: MatSnackBar){}
   
   ngOnInit(): void {
     this.getRegiao();
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Fechar',{duration: 5000});
   }
   
   changeSelect(event: any){
@@ -43,6 +48,7 @@ export class AppComponent implements OnInit{
       error:  (err) => {
         console.log(err);
         this.loading = false;
+        this.openSnackBar('Erro ao carregar as regiões.');
       },
     });
   }
@@ -63,11 +69,13 @@ export class AppComponent implements OnInit{
     this.apiService.sendDataDTOToApi(payload).subscribe({
       next: (res) => {
         this.loading = false;
+        this.openSnackBar('Dados enviados com sucesso.');
         this.getRegiao();
       },
       error:  (err) => {
         console.log(err);
         this.loading = false;
+        this.openSnackBar('Erro ao enviar os dados.')
       },
     });
   }
