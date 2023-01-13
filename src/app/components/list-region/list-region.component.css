@@ -1,0 +1,4 @@
+.table-area{
+    height: calc(100vh - 380px);
+    overflow: auto;
+}

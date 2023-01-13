@@ -12,8 +12,13 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   sendDataDTOToApi(list: DataDTO[]){
-    const headers = { 'content-type': 'application/json'} 
+    const headers = { 'content-type': 'application/json'};
     return this.http.post(this.API_SERVER, list, {headers: headers});
+  }
+
+  getAllRegiao(){
+    const headers = { 'content-type': 'application/json'};
+    return this.http.get(this.API_SERVER+ 'regiao', {headers: headers});
   }
 
 }

@@ -1,6 +1,18 @@
+.container{
+    padding: 0 20px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
 .upload{
     display: flex;
-    margin: 0 10rem;
+    width: 80%;
 }
 
 .input-path{
@@ -22,5 +34,10 @@
 
 .btn{
     height: 55px;
-    width: 200px;
+    width: 240px;
+}
+
+.label-filter{
+    font-size: 15px;
+    margin-right: 20px;
 }

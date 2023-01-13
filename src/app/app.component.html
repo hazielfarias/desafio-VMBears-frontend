@@ -2,23 +2,45 @@
   <span>Desafio VMBears - Haziel</span>
 </mat-toolbar>
 
+<div class="container">
 
-<h2>Upload the xml file</h2>
-<div class="upload">
-  
-  <button type="button" mat-raised-button color="primary" class="btn" (click)="fileInput.click()">
-    <mat-icon>attachment</mat-icon>
-    Upload File
-  </button>
-  <mat-form-field class="input-path">
-    <input matInput placeholder="Select a file" disabled [value]="selectedFile?.name" >
+  <div class="content">
+
+    <h2>Upload no arquivo xml</h2>
+    <div class="upload">
+
+      <button type="button" mat-raised-button color="primary" class="btn" (click)="fileInput.click()">
+        <mat-icon>attachment</mat-icon>
+        Upload Arquivo
+      </button>
+      <mat-form-field class="input-path">
+        <input matInput placeholder="Select a file" disabled [value]="selectedFile?.name">
+      </mat-form-field>
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+    </div>
+
+
+    <button type="button" mat-raised-button color="primary" class="btn" (click)="load()">
+      Enviar para API
+    </button>
+
+  </div>
+
+  <h2>Lista de Regiões</h2>
+  <span class="label-filter">Filtrar por região:</span>
+  <mat-form-field appearance="fill">
+    <mat-label>Região</mat-label>
+    <mat-select [(value)]="selectedFilter" (selectionChange)="changeSelect($event)">
+      <mat-option>-</mat-option>
+      <mat-option *ngFor="let item of filterList" [value]="item">
+        {{item}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
-  <input hidden (change)="onFileSelected($event)" #fileInput type="file">
-
+  
 </div>
-<button type="button" mat-raised-button color="primary" class="btn" (click)="load()">
-  Send to API
-</button>
+
+<app-list-region [list]="filteredList"></app-list-region>
 
 <div *ngIf="loading" class="loading">
   <mat-spinner></mat-spinner>
