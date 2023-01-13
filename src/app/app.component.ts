@@ -18,6 +18,7 @@ export class AppComponent implements OnInit{
   filteredList: Regiao[] = [];
 
   loading = false;
+  loadingMessage = 'Carregando regiões da base de dados...';
   
   filterList = ['SE', 'S', 'N', 'NE'];
   selectedFilter: string | null = null;
@@ -33,11 +34,18 @@ export class AppComponent implements OnInit{
   }
   
   changeSelect(event: any){
+    console.log(event.value);
+    
+    if(!event.value){
+      this.filteredList = this.listRegion;
+      return;
+    }
     this.filteredList = this.listRegion.filter(item => item.regionCode === event.value);
   }
   
   getRegiao(){
     this.loading = true;
+    this.loadingMessage = 'Carregando regiões da base de dados...';
     this.apiService.getAllRegiao().subscribe({
       next: (res) => {
         this.loading = false;
@@ -66,6 +74,7 @@ export class AppComponent implements OnInit{
     const payload = dataToDTO(fileContent);
     
     this.loading = true;
+    this.loadingMessage = 'Enviando dados...';
     this.apiService.sendDataDTOToApi(payload).subscribe({
       next: (res) => {
         this.loading = false;
